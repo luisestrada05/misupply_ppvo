@@ -94,15 +94,15 @@ export class ShippingPrintComponent implements OnInit {
     list.forEach(element => {
       const parameter = element.rackCode;
       const details = $.grep(listRackGlobal, function (b) {
-        return b.code === parameter;
+        return b.code === parameter; 
       });
 
       if (this.utilService.validateEmptyData(details[0])) {
         listRackGlobal.push({ code: element.rackCode, qty: Number(element.rackQty), desc: element.rackDesc });
       } else {
         listRackGlobal.forEach(elementRack => {
-          if (element.rackCode === details[0].code) {
-            details[0].qty = Number(details[0].qty) + Number(element.rackQty);
+          if (elementRack.code === element.rackCode) {
+            elementRack.qty = Number(elementRack.qty) + Number(element.rackQty);
           }
         });
       }
