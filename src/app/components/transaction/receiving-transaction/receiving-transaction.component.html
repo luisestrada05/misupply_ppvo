@@ -1,0 +1,114 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div> 
+ 
+
+<form class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group row"
+      autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSearch()">
+
+  <div class="form-row col d-flex justify-content-end">
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <select 
+          class="custom-select" 
+          formControlName="shipFrom"
+          [class.is-invalid]="shipFromNoValido"
+          (change)="onChangeShipFrom()">
+        <option value=null disabled selected>Ship From </option>
+        <option *ngFor="let item of listShipFrom" [value]="item.code">{{item.desc | uppercase}}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <select 
+          class="custom-select"
+          formControlName="shipper"
+          [class.is-invalid]="shipperNoValido"
+          (change)="onChangeFolio()">
+        <option value=null disabled selected>Shipper</option>
+        <option *ngFor="let item of listFolio" [value]="item.Folio">{{item.Folio | uppercase}}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input 
+            type="text"  class="form-control text-center"  matInput  ngxDaterangepickerMd 
+            placeholder="To date" formControlName="toDate"
+            [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" 
+            singleDatePicker=true 
+            disabled />
+      </div>
+    </div>
+
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">
+      <button type="submit" class="btn btn-primary btn-block" ><i class="fa fa-search" aria-hidden="true"></i> -
+        Search</button>
+    </div>
+  </div>
+</form>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid 
+        [data]="view" 
+        [pageSize]="pageSize" 
+        [skip]="skip" 
+        [pageable]="pageable"
+        (pageChange)="pageChange($event)" 
+        [sortable]="true">
+
+        <kendo-grid-column field="ttparte" title="Part Number" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttdesc" title="Description" [width]="200"></kendo-grid-column>
+        <kendo-grid-column field="ttlote" title="Lot" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttqty" title="Qty Shipped" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttum" title="UM" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column title="Qty Received" [width]="100" format="{0:n0}">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <input type="text"
+              style=" height: 100%; width: 95%;border: solid 1px #CCC; border-radius: 3px; padding: 5px;"
+              value={{dataItem.ttqtyrec}} (blur)="updateDiscrepancia(dataItem, $event.target.value)">
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+        <textarea class="form-control" name="comment" [(ngModel)]="comment" aria-label="With textarea"
+          placeholder="Comment" maxlength="200"></textarea>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2 mb-2">
+        <div class="col-md-6 offset-md-6 d-flex">
+          <div class="custom-file">
+            <input 
+              type="file" 
+              class="custom-file-input" 
+              id="customFileLang"
+              multiple 
+              lang="es"
+              [class.is-invalid]="confirmacionNoValida"
+              (change)="handleFileInput($event.target.files)">
+            <label 
+              class="custom-file-label" 
+              for="customFileLang">
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i> - {{customFileLang}}</label>
+              <div *ngIf="confirmacionNoValida" class="invalid-feedback">required field.</div>
+          </div>
+          <button type="button" 
+            class="btn btn-success ml-2"
+            (click)="onConfirm()">Confirmation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

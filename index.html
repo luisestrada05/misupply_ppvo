@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=device-width, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Resource Logistic</title>
+    
+    <link  rel="stylesheet" href="dependencias/bootstrap/css/bootstrap.min.css" />
+    <!--
+    <link  rel="stylesheet" href="dependencias/bootstrap/css/bootstrap-modal-carousel.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.common.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.default.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.default.mobile.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.common-material.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.material.min.css" />-->
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.common.min.css" />
+    
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.common-bootstrap.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.bootstrap.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.bootstrap.mobile.min.css" />
+    <link  rel="stylesheet" href="dependencias/telerik/styles/kendo.rtl.min.css" />
+    <link  rel="stylesheet" href="common/css/cssMetalsa.css" />
+    <link  rel="stylesheet" href="common/css/cssMenuMetalsa.css" />
+    <link  rel="stylesheet" href="common/css/cssValidator.css" />
+    <link  rel="stylesheet" href="common/css/scrollTable.css" />
+
+    
+</head>
+<body id="page_bg" ng-app="sourceLogistic" ng-controller="sourceLogisticController">
+
+    <div class="modal fade" id="modalLoading" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div id="divloading" class='centerLoad' style="display: none;">
+                <img src='./common/img/load.gif' width="100px;" height="100px;">
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="main-wrapper">
+
+        <!-- Header -->
+        <div id="header">
+            <div class="col-md-4">
+                <div id="logo">
+                    <p style="text-align:right;">
+                        <a href="http://www.metalsa.com/index.html">
+                            <img border="0" src="common/img/logo.png">
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="Title" style="padding-left: 100px; padding-top: 40px;">
+                    <h1 style="color: #fff; text-align: center;">
+                        Mi-Supply<br> <span id="lblVendorName"></span>
+                    </h1>                    
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="lang-select">
+	                <button type="button" id="btnLogout" class="btn btn-xs btn-danger pull-right" ng-click='salir()' style="display: none;">
+	                    <span class="glyphicon glyphicon-log-out"></span> Logout
+	                </button>
+                </div>
+            </div>
+               
+                 
+           <div class="col-md-4">
+           	
+               <div id="account_chu">
+	                <div id="lang-select">
+		               <p><b><a style="color:white;"><span id="lblPlanta"></span></a></b></p>
+	                </div>
+               </div>
+           </div>
+    </div>
+
+    <div id="contentMaster">
+        <!-- Menu -->
+        <div id="menu-container">
+            <div id="baseMenu" style="width:100%;margin:auto;height:57px;border:1px #000000 solid;border-right:none;border-left:none;">
+                <ul id="jMenu"></ul>                    
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div id="content" style="background-color: #fff;" >
+            <div id="content-left">
+                <form name='Formulario' kendo-validator="validator">
+                    <section ng-view></section>
+                    
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="footer">
+                <div style="clear:both; text-align:center"> 
+                    <span style="color:#fff; font-size:12px; ">
+                        <a href="https://www.metalsa.com/privacy-policy" target="_blank" class="sitemap-link" style="color:#fff; font-size:12px; ">PRIVACY NOTIFICATION.</a> <br>
+                        Copyright © 2019, Metalsa S.A. de C.V. All Rights Reserved. <br>Carretera Miguel Alemán Km. 16.5 No. 100, Apodaca, Nuevo León, México, 66600. Reproduction in whole or in part, without the express written permission of the owner is prohibited</span>
+                    </div>
+                </div>       
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal fade" id="mdlAlertas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" id="modalHeader">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel"><label id="titleMesage"></label></h4>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="mdlDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><label id="titleMesageDetalle"></label></h4>
+                </div>
+                <div class="modal-body" id="mdlRelDet">
+                    <div id="gridReleasesDetail"></div>
+                    <!--<kendo-tooltip options="tooltipOptions">
+                        <kendo-grid id="gridReleasesDetail"></kendo-grid>
+                    </kendo-tooltip>-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+        <!-- Librarys -->
+        <script src="./dependencias/telerik/js/jquery.min.js"></script>
+        <script src="./dependencias/bootstrap/js/bootstrap.min.js"></script>
+        <script src="./dependencias/bootstrap/js/bootstrap-filestyle.min.js"></script>
+        <script src="./dependencias/angular/angular.min.js"></script>
+        <script src="./dependencias/angular/angular-route.min.js"></script>
+        <script src="./dependencias/angular/angular-animate.min.js"></script>
+        <script src="./dependencias/angular/angular-cookies.min.js"></script>
+        <script src="./dependencias/telerik/js/kendo.all.min.js"></script>
+        <script src="./dependencias/telerik/js/jszip.min.js"></script>
+        <script src="./dependencias/bootstrap/js/ui-bootstrap-tpls-1.1.2.js"></script>
+        <script src="./dependencias/jquery/jquery.soap.js"></script>
+        <script src="./dependencias/jquery/jquery.battatech.excelexport.min.js"></script>
+        <script src="./dependencias/progress/progress.jsdo.3.1.js"></script>
+
+
+        <!-- App & Router -->
+        <script src="./componentes/router.js"></script>
+
+        <!-- Controller -->
+        <script src="./common/js/sourceLogisticController.js"></script>
+
+        <!-- Scripts -->
+        <script src="./config/conn.js"></script>
+        <script src="./common/js/services.js"></script>
+        <script src="./common/js/index.js"></script>
+
+        <!-- Controllers -->
+        <script src="./componentes/home/index.js"></script>
+        <script src="./componentes/recupera/index.js"></script>
+        <script src="./componentes/setpas/index.js"></script>
+        <script src="./componentes/nuser/index.js"></script>
+  
+        <script src="./componentes/releases/index.js"></script>
+        <script src="./componentes/tracking/index.js"></script>
+        <script src="./componentes/transactions/receiving/index.js"></script>
+        <script src="./componentes/transactions/report-production/index.js"></script>
+        <script src="./componentes/transactions/shipping/index.js"></script>
+        <script src="./componentes/transactions/cycle/index.js"></script>
+        <script src="./componentes/asn/index.js"></script>
+        <script src="./componentes/inquire/inq-asn/index.js"></script>
+        <script src="./componentes/inquire/inq-inventory/index.js"></script>
+        <script src="./componentes/inquire/inq-transactions/index.js"></script>
+        <script src="./componentes/inquire/inq-receiving/index.js"></script>
+        <script src="./componentes/inquire/inq-shipping/index.js"></script>
+        
+    </body>
+</html>

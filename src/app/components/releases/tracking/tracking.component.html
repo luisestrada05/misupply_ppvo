@@ -1,0 +1,54 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;"> 
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid 
+        [data]="view" 
+        [pageSize]="pageSize" 
+        [skip]="skip" 
+        [pageable]="pageable" 
+        (pageChange)="pageChange($event)" 
+        (excelExport)="onExcelExport($event)" 
+        [groupable]="true" 
+        [group]="groups"
+        [sortable]="true" 
+        [resizable]="true" 
+        (groupChange)="groupChange($event)"
+        (dataStateChange)="dataStateChange($event)"> 
+
+        <ng-template kendoGridToolbarTemplate>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+          <kendo-pager-page-sizes *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+
+        <kendo-grid-column field="order" title="Order" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="part" title="Part" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="desc" title="Description" [width]="200"></kendo-grid-column>
+        <kendo-grid-column field="release" title="Release" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="invoice" title="Invoice" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="reqacum" title="Requirement" [width]="110" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="received" title="Received" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="transit" title="Transit" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="backlog" title="Backlog" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="image" title="Status" [width]="100">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <img [src]="dataItem.img" width="22" height="22" alt="">
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="req1" title="{{t}}" [width]="110"></kendo-grid-column>
+        <kendo-grid-column field="req2" title="{{tmasUno}}" [width]="110"></kendo-grid-column>
+        <kendo-grid-column field="req3" title="{{tmasDos}}" [width]="110"></kendo-grid-column>
+
+        <kendo-grid-excel fileName="Tracking Releases.xlsx" [filterable]="true" [fetchData]="allData">
+        </kendo-grid-excel>
+      </kendo-grid>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="container-login animated fadeInLeft">
+  <div class="wrap-login" style="  border-left: 5px solid #0e66ad;">
+    <form  
+      autocomplete="off" [formGroup]="formulario" (ngSubmit)="logIn()">
+      <div class="mb-3">
+        <img src="{{constAssets.img.par}}images/logo-metalsa.png" alt="">
+      </div>
+      <div class="text-center mb-3">
+        <h4>¡Mi-Supply!</h4>
+      </div> 
+
+      <div class="form-group ">
+        <input 
+          class="form-control" 
+          type="text" 
+          placeholder="User"
+          formControlName="userId"
+          [class.is-invalid]="userNoValido">
+          <div class="text-danger texto-alerta" *ngIf="userNoValido">
+            required field
+          </div>
+      </div>
+
+      <div class="form-group">
+        <input 
+          class="form-control" 
+          type="password" 
+          formControlName="password"
+          placeholder="Password"
+          [class.is-invalid]="passNoValido">
+          <div class="text-danger texto-alerta" *ngIf="passNoValido">
+            required field
+          </div>
+      </div>
+
+      <div class="form-group">
+        <select 
+          class="custom-select" 
+          formControlName="domain"
+          [class.is-invalid]="dominioNoValido">
+          <option  value=null disabled selected>Selecciona</option>
+          <option 
+            *ngFor="let item of listaDominios" 
+            [value]="item.id"
+            >{{item.descripcion | uppercase}}
+          </option>
+        </select>
+        <div class="text-danger texto-alerta" *ngIf="dominioNoValido">
+          required field
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <a routerLink="/newAccount" class="txt1">
+          Create new account /
+        </a>
+        <a routerLink="/forgottenPass" class="txt1">
+          ¿Forgotten your password?
+        </a>
+      </div>
+      <button type="submit" class="btn btn-info btn-block">Login</button>
+    </form>
+  </div>
+</div>
+<app-footer></app-footer>

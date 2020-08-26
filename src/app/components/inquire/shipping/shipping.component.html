@@ -1,0 +1,78 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group row">
+  <div class="form-row col d-flex justify-content-end">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+              [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="fromDate"
+              name="fromDate" [minDate]="minDatefromDate" [maxDate]="maxDatefromDate" autocomplete="off"
+              (ngModelChange)="ngChangeFromDate($event)"
+               />
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+              [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="toDate"
+              name="toDate" [minDate]="minDatetoDate" [maxDate]="maxDatetoDate" autocomplete="off"
+               />
+      </div>
+    </div>
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">
+      <button class="btn btn-primary btn-block" (click)="onSearch()"><i class="fa fa-search" aria-hidden="true"></i> -
+        Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div> 
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid 
+        [data]="view" 
+        [pageSize]="pageSize" 
+        [skip]="skip" 
+        [pageable]="pageable" 
+        (pageChange)="pageChange($event)"
+        (excelExport)="onExcelExport($event)" 
+        [sortable]="true" 
+        [resizable]="true"  
+        (dataStateChange)="dataStateChange($event)"> 
+ 
+        <ng-template kendoGridToolbarTemplate>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+          <kendo-pager-page-sizes  *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+        <kendo-grid-column field="ShipTo" title="ShipTo" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Shipper" title="Shipper" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Carrier" title="Carrier" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="Driver" title="Driver" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="ShipDate" title="ShipDate" [width]="100" format="{0:d}"></kendo-grid-column>
+        <kendo-grid-column field="ASN" title="ASN" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="Receiver" title="Received" [width]="150"></kendo-grid-column>
+        <div *kendoGridDetailTemplate="let dataItem">
+          <app-details-shipping [objDetail]="dataItem"></app-details-shipping>
+        </div>
+        <kendo-grid-excel fileName="Inquire Shipping.xlsx" [fetchData]="allData"></kendo-grid-excel>
+        
+      </kendo-grid>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="print">
+
+    <div class="row" *ngIf="print.Encabezado">
+      <div class="row justify-content-start">
+        <div class="col">
+          <img src="{{constAssets.img.par}}images/logoMetalsa.png" height="148" alt="" style="margin: 3px;">
+        </div>
+      </div>
+      <div class="col"> 
+        <div class="text-center">
+          <p class="texto-cuerpo" style="font-size: 1.2em;">REMISSION OF TRANSFERENCE {{print.transferId | uppercase}}</p>
+        </div>
+
+        <form class="form-inline mt-2">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group row">
+              <label for="Origin" class="texto-encabezdo">Origin</label>
+              <input type="text" disabled class="texto-cuerpo" style="font-size: 1.1em;" value="{{print.nameVendor}}">
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+            <div class="form-group row">
+              <label for="Destination" class="texto-encabezdo">Destination</label>
+              <input type="text" disabled class="texto-cuerpo" style="font-size: 1.1em;" value="{{print.nameShipto}}">
+            </div> 
+          </div>
+        </form>
+
+      </div>
+      <div class="row justify-content-end">
+        <div class="col ">
+          <ngx-qrcode [qrc-value]="print.QR">
+          </ngx-qrcode>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row" *ngIf="!print.Encabezado">
+      <div class="row justify-content-start">
+        <div class="col">
+          <img src="{{constAssets.img.par}}images/logoMetalsa.png" height="120" alt="" style="margin: 1px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="text-center">
+          <h4>REMISIÓN DE EMBARQUE {{print.Shipper | uppercase}}</h4>
+        </div>
+
+        <form class="form-inline mt-1">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group row">
+              <label for="Origin" class="texto-encabezdo">Origin</label>
+              <input type="text" disabled class="texto-cuerpo" value="{{print.nameVendor}}">
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-1">
+            <div class="form-group row">
+              <label for="Destination" class="texto-encabezdo">Destination</label>
+              <input type="text" disabled class="texto-cuerpo" value="{{print.nameShipto}}">
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="line"></div>
+    </div>
+  
+    <div class="form-group row" style="clear: both;">
+      <div class="form-row col text-left">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group ">
+            <label for="date" class="texto-encabezdo">Date</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Date}}">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group ">
+            <label for="Destination" class="texto-encabezdo">Reference</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Reference}}">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" *ngIf="print.Encabezado">
+          <div class="form-group ">
+            <label for="Destination" class="texto-encabezdo">Transfer Id</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.transferId}}">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group">
+            <label for="Origin" class="texto-encabezdo">Carrier</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Carrier}}">
+          </div>
+        </div> 
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group">
+            <label for="Destination" class="texto-encabezdo">Driver</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Driver}}">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group">
+            <label for="Destination" class="texto-encabezdo">Truck</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Truck}}">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group">
+            <label for="Seal" class="texto-encabezdo">Seal Number</label>
+            <input type="text" disabled class="texto-cuerpo" value="{{print.Seal}}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="line"></div>
+    </div>
+  
+    <div class="table-responsive p-3 m-0" *ngIf="print.ListShipping !== null"
+      style="border-radius: 10px; border:solid 1px #cccccc;">
+  
+      <table class="table table-hover text-left m-0" style="font-size: 1em;">
+        <thead>
+          <tr>
+            <th scope="col">Part Code</th>
+            <th scope="col">Description</th>
+            <th class="text-right" scope="col">Qty Part</th>
+            <th class="text-right" scope="col">UM</th>
+          </tr>
+        </thead>
+        <tbody style="font-size: .9em;" *ngFor="let item of print.ListShipping">
+          <tr>
+            <td>{{item.Part}}</td>
+            <td>{{item.PartDesc}}</td>
+            <td class="text-right">{{item.Qty}}</td>
+            <td class="text-right">{{item.UM}}</td>
+          </tr>
+      </table>
+    </div>
+  
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+      <div class="form-group text-left">
+        <label for="comentario" class="texto-encabezdo">Comment</label>
+        <input type="text" disabled class="texto-cuerpo" value="{{print.Comment}}">
+      </div>
+    </div>
+  
+    <div class="form-group row" style="clear: both;" *ngIf="print.Encabezado">
+      <div class="form-row col">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group ">
+            <label for="chofer" class="texto-encabezdo mb-5 text-center">Driver</label>
+            <hr style="border: 1px solid black; width: 100%;">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group ">
+            <label for="eldoc" class="texto-encabezdo mb-5  text-center">Author</label>
+            <hr style="border: 1px solid black; width: 100%;">
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group ">
+            <label for="autorizador" class="texto-encabezdo mb-5  text-center">Authorising</label>
+            <hr style="border: 1px solid black; width: 100%;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

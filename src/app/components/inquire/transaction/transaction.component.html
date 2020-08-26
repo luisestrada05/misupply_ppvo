@@ -1,0 +1,102 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div>
+ 
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group row">
+  <form class="form-row col d-flex justify-content-end"
+        autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSearch()">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <select 
+        class="custom-select" 
+        formControlName="noParte"
+        [class.is-invalid]="noParteNoValido">
+        <option value=null disabled selected>Num. Part</option>
+        <option *ngFor="let item of listNumeroParte" [value]="item.PartId">{{item.PartId}} - {{item.DescPart}}</option>
+      </select>
+      <div class="text-danger texto-alerta" *ngIf="noParteNoValido">
+        required field
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+              [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true 
+              formControlName="fromDate"
+              [class.is-invalid]="fromDateNoValido"
+              [minDate]="minDatefromDate" [maxDate]="maxDatefromDate" autocomplete="off"
+              (ngModelChange)="ngChangeFromDate($event)"
+               />
+        <div class="text-danger texto-alerta" *ngIf="fromDateNoValido">
+          required field
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+              [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true 
+              formControlName="toDate"
+              [class.is-invalid]="toDateNoValido"
+              [minDate]="minDatetoDate" [maxDate]="maxDatetoDate" autocomplete="off"
+               />
+        <div class="text-danger texto-alerta" *ngIf="toDateNoValido">
+          required field
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">
+        <button 
+          class="btn btn-primary btn-block"
+          type="submit">
+          <i class="fa fa-search" aria-hidden="true"></i> - Search</button>
+    </div>
+  </form>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid 
+        [data]="view" 
+        [pageSize]="pageSize" 
+        [skip]="skip" 
+        [pageable]="pageable"
+        (pageChange)="pageChange($event)" 
+        (excelExport)="onExcelExport($event)" 
+        [sortable]="true"
+        (dataStateChange)="dataStateChange($event)"> 
+
+        <ng-template kendoGridToolbarTemplate>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+          <kendo-pager-page-sizes *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+        <kendo-grid-column field="Fecha" title="Date" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Hora" title="Time" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Tipo" title="Type" [width]="200"></kendo-grid-column>
+        <kendo-grid-column field="Parte" title="No Part" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="Cantidad" title="Qty" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="Usuario" title="User" [width]="110" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="Lote" title="Lot" [width]="110" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-excel fileName="Inquire Transaction.xlsx" [filterable]="true" [fetchData]="allData"></kendo-grid-excel>
+
+      </kendo-grid>
+    </div>
+  </div>
+</div>

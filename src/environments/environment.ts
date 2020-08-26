@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false
+  // api: 'http://tqalapo01:7778/PortalProveedores/rest/PortalProveedoresService',
+  // apiPrueba: 'http://oedwapo01:8980/ppvo/rest/ppvoService'
 };
 
 /*

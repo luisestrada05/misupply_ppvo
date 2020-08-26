@@ -1,0 +1,90 @@
+
+<div class="container-login animated fadeInRight">
+  <div class="wrap-login" style="border-right: 5px solid #0e66ad;">
+
+    <form class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        autocomplete="off" [formGroup]="user" (ngSubmit)="newUser()">
+      
+      <div class="mb-3">
+        <img src="{{constAssets.img.par}}images/logo-metalsa.png" alt="">
+      </div>
+
+      <div class="text-center mb-3"> 
+        <h4>New account</h4> 
+      </div>
+      <div class="form-group">
+        <select 
+          class="custom-select" 
+          (change)="changeDomain()"
+          formControlName="domain"
+          [class.is-invalid]="domainNoValido">
+          <option value=null disabled selected>Selecciona</option>
+          <option *ngFor="let item of listDomain" [value]="item.ProductID">{{item.ProductName | uppercase}}</option>
+        </select>
+        <div class="text-danger texto-alerta" *ngIf="domainNoValido">
+          required field
+        </div>
+      </div>
+      <div class="form-group">
+        <select 
+          class="custom-select" 
+          formControlName="supplier" 
+          [class.is-invalid]="supplierNoValido"
+          >
+          <option value=null disabled selected>Selecciona</option>
+          <option *ngFor="let item of listSupplier" [value]="item.Supplier">{{item.Name | uppercase}}</option>
+        </select>
+        <div class="text-danger texto-alerta" *ngIf="supplierNoValido">
+          required field
+        </div>
+      </div>
+      <div class="form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="First Name" 
+          formControlName="firstName"
+          [class.is-invalid]="firstNameNoValido"
+          >
+          <div class="text-danger texto-alerta" *ngIf="firstNameNoValido">
+            required field
+          </div>
+      </div>
+      <div class="form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Last Name" 
+          formControlName="lastName"
+          [class.is-invalid]="lastNameNoValido"
+          >
+          <div class="text-danger texto-alerta" *ngIf="lastNameNoValido">
+            required field
+          </div>
+      </div>
+      <div class="form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Email" 
+          formControlName="email"
+          [class.is-invalid]="emailNoValido"
+          >
+          <div class="text-danger texto-alerta" *ngIf="emailNoValido">
+            required field
+          </div>
+      </div>
+      <div class="mb-3">
+        <a routerLink="/login" class="txt1">
+          Get Back
+        </a>
+      </div>
+
+      <button type="submit" class="btn btn-info btn-block">Create User</button>
+
+    </form>
+
+  </div>
+</div>
+
+<app-footer></app-footer>

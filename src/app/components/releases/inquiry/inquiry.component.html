@@ -1,0 +1,139 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group row">
+    <div class="form-row col d-flex justify-content-end">
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+                [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="fromDate"
+                name="fromDate" [minDate]="minDatefromDate" [maxDate]="maxDatefromDate" autocomplete="off"
+                (ngModelChange)="ngChangeFromDate($event)"
+                 />
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+                [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="toDate"
+                name="toDate" [minDate]="minDatetoDate" [maxDate]="maxDatetoDate" autocomplete="off"
+                 />
+        </div>
+      </div>
+      <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">
+        <button class="btn btn-primary btn-block" (click)="onSearch()"><i class="fa fa-search" aria-hidden="true"></i> -
+          Search</button>
+      </div>
+    </div>
+</div>
+
+  
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid [data]="gridView" [pageSize]="pageSize" [skip]="skip" [pageable]="pageable"
+        (pageChange)="pageChange($event)" [sortable]="true" [resizable]="true"
+        (dataStateChange)="dataStateChange($event)">
+
+        <ng-template kendoGridToolbarTemplate>
+          <kendo-pager-page-sizes *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+
+        <kendo-grid-column field="ttrid" title="Releases" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttrnbr" title="PO Nbr" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttrdateap" title="Appr Date" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="ttrtimeap" title="Appr Time" [width]="70"></kendo-grid-column>
+        <kendo-grid-column field="ttrdatecr" title="Cr Date" [width]="100" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="ttrtimecr" title="Cr Time" [width]="70" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="ttrusercr" title="By" [width]="200" format="{0:n0}"></kendo-grid-column>
+        <kendo-grid-column field="image" title="Active" [width]="50">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <img [src]="dataItem.img" width="22" height="22" alt="">
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="image" title="Detail" [width]="50">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <a target="_blank " (click)="onDetail(dataItem)" tooltip="¡DETAIL!" placement="right" show-delay="250">
+              <span class="k-icon k-i-plus-outline blue-span" style="font-size: 22px; "></span>
+            </a>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+
+
+<div id="modal-release" class="modal modal-template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  data-backdrop="static" href="#">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-content tx-size-xl">
+      <div class="modal-body pd-y-20 pd-x-20">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+            <h4>{{title}}</h4>
+            <div class="line"></div>
+            <div class="text-left">
+              <kendo-grid [data]="gridViewDetails" scrollable="scrollable" [pageSize]="pageSizeDetail"
+                [skip]="skipDetail" [pageable]="pageableDetail" (excelExport)="onExcelExport($event)"
+                (pageChange)="pageChangeDetail($event)" [sortable]="true" [resizable]="true">
+                <ng-template kendoGridToolbarTemplate>
+                  <button type="button" kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+                </ng-template>
+                <!-- <kendo-grid-column field="part" title="Item" [width]="100"></kendo-grid-column>
+              <kendo-grid-column field="custpart" title="Supplier" [width]="100"></kendo-grid-column>
+              <kendo-grid-column field="lastps" title="Last Shipper"  [width]="120"></kendo-grid-column>
+              <kendo-grid-column field="delayamt" title="Qty Pendding"  [width]="120"></kendo-grid-column>
+              <kendo-grid-column-group title="Days" *ngFor="let item of columnsDay; let i = index">
+                <kendo-grid-column title="{{item.dateini}}" format="{0:d}" [width]="120" [style]="{'text-align': 'center', 'font-weight': 700}">
+                  <ng-template kendoGridCellTemplate let-dataItem >
+                    {{dataItem.column[i].qty | number}}
+                  </ng-template>
+                </kendo-grid-column>
+              </kendo-grid-column-group>
+              <kendo-grid-column-group title="Weeks" *ngFor="let item of columnsWekk; let i = index" >
+                <kendo-grid-column title="{{item.dateini}}" format="{0:d}" [width]="120" [style]="{'text-align': 'center', 'font-weight': 700}">
+                  <ng-template kendoGridCellTemplate let-dataItem >
+                    {{dataItem.column[week + i].qty | number}} 
+                  </ng-template>
+                </kendo-grid-column>
+              </kendo-grid-column-group>
+              <kendo-grid-column-group title="Month" *ngFor="let item of columnsMonth; let i = index" >
+                <kendo-grid-column title="{{item.dateini}}" format="{0:d}" [width]="120" [style]="{'text-align': 'center', 'font-weight': 700}">
+                  <ng-template  kendoGridCellTemplate let-dataItem >
+                    {{dataItem.column[month + i].qty | number}} 
+                  </ng-template>
+                </kendo-grid-column>
+              </kendo-grid-column-group>   -->
+                <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}"
+                  format="{{column.format}}" filter="{{column.type}}" width="{{column.width}}">
+                </kendo-grid-column>
+                <kendo-grid-excel fileName="Release Detail.xlsx" [filterable]="true" [fetchData]="allData">
+                </kendo-grid-excel>
+              </kendo-grid>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

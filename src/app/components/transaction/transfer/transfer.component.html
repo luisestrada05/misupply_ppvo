@@ -1,0 +1,296 @@
+<app-header></app-header>
+
+
+<div class="row mg-b-20 mb-4 animated fadeIn" style="clear: both;">
+  <div class="col-xs-12 col-sm-12 col-md-12">
+
+    <div class="card card-dashboard-nine " *ngIf="!advanceShipping">
+      <div class="row">
+        <form class="col-lg-12 col-md-12 col-sm-12 form-group row"  
+            autocomplete="off" [formGroup]="encabezado" (ngSubmit)="advance()">            
+  
+          <div class="form-row col">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Ship To</label>
+                <select 
+                    class="custom-select"
+                    formControlName="shipTo"
+                    (change)="onChangeShipTo()"
+                    [class.is-invalid]="shipToNoValido">
+                  <option value=null disabled selected>Selecciona</option>
+                  <option *ngFor="let item of listShipDestino" [value]="item.code">{{item.desc | uppercase}}</option>
+                </select>
+                <div class="text-danger texto-alerta" *ngIf="shipToNoValido">
+                  required field
+                </div> 
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Reference</label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  placeholder="Reference" 
+                  formControlName="reference"
+                  maxlength="24"
+                  [class.is-invalid]="referenceNoValido">
+                  <div class="text-danger texto-alerta" *ngIf="referenceNoValido">
+                    required field
+                  </div> 
+                  <div class="text-danger texto-alerta" *ngIf="encabezado.get('reference').status === 'PENDING'">
+                    Checking...
+                  </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Transfer type</label>
+                <select 
+                  class="custom-select"
+                  formControlName="type"
+                  [class.is-invalid]="typeNoValido">
+                  <option value=null disabled selected>Selecciona</option>
+                  <option *ngFor="let item of listType" [value]="item.id">{{item.description | uppercase}}</option>
+                </select>
+                  <div class="text-danger texto-alerta" *ngIf="typeNoValido">
+                    required field
+                  </div> 
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Carrier</label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  placeholder="Carrier" 
+                  formControlName="carrier"
+                  maxlength="36"
+                  [class.is-invalid]="carrierNoValido">
+                  <div class="text-danger texto-alerta" *ngIf="carrierNoValido">
+                    required field
+                  </div> 
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-2">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Driver</label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  placeholder="Driver" 
+                  formControlName="driver"
+                  maxlength="24"
+                  [class.is-invalid]="driverNoValido">
+                  <div class="text-danger texto-alerta" *ngIf="driverNoValido">
+                    required field
+                  </div> 
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-2">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Vehicle</label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  placeholder="Vehicle" 
+                  formControlName="truck"
+                  maxlength="12"
+                  [class.is-invalid]="truckNoValido">
+                  <div class="text-danger texto-alerta" *ngIf="truckNoValido">
+                    required field
+                  </div> 
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+              <div class="form-group">
+                <label for="exampleInputSeal">Seal</label>
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  placeholder="Seal Number" 
+                  formControlName="seal"
+                  maxlength="36">
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Comment</label>
+                <textarea 
+                  class="form-control" 
+                  aria-label="With textarea"
+                  placeholder="Comment" 
+                  formControlName="comment"
+                  maxlength="200"></textarea>
+              </div>
+            </div>
+
+            <div class="col-md-2 offset-md-10 d-flex mt-1">
+              <button type="submit" class="btn btn-info btn-block">Advance</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card card-dashboard-nine " *ngIf="advanceShipping">
+      <div class="row">
+        <form class="col-lg-12 col-md-12 col-sm-12 col-md-12  form-group row" 
+              autocomplete="off" [formGroup]="detalle" (ngSubmit)="add()">  
+          <div class="form-row col">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Part</label>
+                  <select 
+                      class="custom-select"
+                      formControlName="Part"
+                      (change)="onChangePart()"
+                      [class.is-invalid]="partNoValido || existeRegistro">
+                    <option value=null disabled selected>Selecciona</option>
+                    <option *ngFor="let item of listParts" [value]="item.part">{{item.part}}
+                    </option>
+                  </select>
+                  <div class="text-danger texto-alerta" *ngIf="partNoValido">
+                    required field
+                  </div> 
+                  
+                <div class="text-danger texto-alerta" *ngIf="existeRegistro">
+                  The part number with the specified lot already exists.
+                </div> 
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">To Ship</label>
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="To Ship" 
+                    formControlName="Qty"
+                    (keypress)="onlyNumber($event)" 
+                    [class.is-invalid]="qtyNoValido">
+                  <div class="text-danger texto-alerta" *ngIf="qtyNoValido">
+                    required field
+                  </div> 
+                </div>
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">UM</label>
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="UM" 
+                    formControlName="UM"
+                    disabled>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Lot</label>
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    placeholder="Lot" 
+                    formControlName="compLot"
+                    [class.is-invalid]="lotNoValido"
+                    maxlength="36">
+                    <div class="text-danger texto-alerta" *ngIf="lotNoValido">
+                      required field
+                    </div> 
+                </div>
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Sublot</label>
+                  <input 
+                    class="form-control" 
+                    type="text" 
+                    formControlName="comp"
+                    placeholder="Sub Lot"  
+                    (keypress)="onlyNumber($event)" 
+                    [class.is-invalid]="compValidator"
+                    autocomplete="off">
+                    <div class="text-danger texto-alerta" *ngIf="compValidator">
+                      Excede el limite permitido de 99.
+                    </div>
+                </div>
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-6 col-xs-12">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Add</label>
+                  <button type="submit" class="btn btn-info btn-lg btn-block d-flex justify-content-center" ><i class="fa fa-plus-circle"
+                    aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 m-1" style="clear: both;" >
+        <div class="line"></div>
+      </div>
+
+      <div class="row col-lg-12 col-md-12 col-sm-12 col-md-12">
+        <kendo-grid [data]="view" [pageSize]="pageSize" [skip]="skip" [pageable]="pageable"
+        (pageChange)="pageChange($event)" [sortable]="true" *ngIf="tieneDatos">
+  
+        <kendo-grid-column field="Part" title="Part Number" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="PartDesc" title="Description" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Qty" title="Qty Part" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="UM" title="UM" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="Lot" title="Lot Shipped" [width]="100"></kendo-grid-column>
+        <kendo-grid-column title="Delete" [width]="50" [style]="{'text-align': 'center'}">
+          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a (click)="onMinus(rowIndex)" tooltip="Delete!" placement="right" show-delay="250">
+              <i class="fa fa-minus" style="color: red;" aria-hidden="true"></i>
+            </a>
+          </ng-template>
+        </kendo-grid-column>
+        </kendo-grid> 
+      </div> 
+
+      <div class="col-md-4 offset-md-8 d-flex" style="clear: both;">
+        <button type="button" (click)="return()" class="btn btn-info btn-block m-1">Return</button>
+        <button type="button" (click)="onSave()" *ngIf="tieneDatos" class="btn btn-success btn-block m-1">Save</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div id="modal-print" class="modal modal-template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  data-backdrop="static" href="#">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content tx-size-lg">
+      <div class="modal-body  pd-y-20 pd-x-20">
+        <button type="button" class="close" data-dismiss="modal" (click)="close()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="row p-4 ">
+          <!-- <app-print [print]="print"></app-print>    -->
+          <app-transfer-print [print]="print"></app-transfer-print>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12"> 
+            <div class="col-md-2 offset-md-10 d-flex mt-1">
+              <button type="button" *ngIf="!imprimir" (click)="confirmar()"
+                class="btn btn-info btn-block m-2">Confirmar</button>
+              <button type="button" *ngIf="imprimir" class="btn btn-info btn-block m-2"
+                (click)="imprimirRemision()">Imprimir</button>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+

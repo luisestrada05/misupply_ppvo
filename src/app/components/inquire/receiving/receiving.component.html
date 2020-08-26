@@ -1,0 +1,132 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <app-header></app-header>
+</div>
+ 
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group row">
+  <div class="form-row col d-flex justify-content-end">
+
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">  
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox"  [(ngModel)]="received">
+        <label class="form-check-label">
+          Received
+        </label>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">  
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+                [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="fromDate"
+                name="fromDate" [minDate]="minDatefromDate" [maxDate]="maxDatefromDate" autocomplete="off"
+                (ngModelChange)="ngChangeFromDate($event)"
+                 />
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
+        </div>
+        <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+                [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="toDate"
+                name="toDate" [minDate]="minDatetoDate" [maxDate]="maxDatetoDate" autocomplete="off"
+                 />
+      </div>
+    </div>
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12 d-flex align-items-center">
+      <button class="btn btn-primary btn-block" (click)="onSearch()"><i class="fa fa-search" aria-hidden="true"></i> -
+        Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" *ngIf="tieneDatos" style="clear: both;">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-dashboard-nine">
+      <kendo-grid 
+      [data]="view" 
+      [pageSize]="pageSize" 
+      [skip]="skip" 
+      [pageable]="pageable"
+      (pageChange)="pageChange($event)" 
+      (excelExport)="onExcelExport($event)" 
+      [sortable]="true"
+      (dataStateChange)="dataStateChange($event)">
+
+        <ng-template kendoGridToolbarTemplate>
+          <button type="button" kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+          <kendo-pager-page-sizes *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+
+        <kendo-grid-column field="shipfrom" title="Ship From" [width]="50"></kendo-grid-column>
+        <kendo-grid-column field="shipper" title="Shipper" [width]="150"></kendo-grid-column>
+        <kendo-grid-column field="comments" title="Comments" [width]="200"></kendo-grid-column>
+        <kendo-grid-column title="Download" [width]="50" [style]="{'text-align': 'center'}">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <a  (click)="onDownload(dataItem)" tooltip="¡DOWNLOAD!" placement="right" show-delay="250">
+              <span class="k-icon k-i-download blue-span" style="font-size: 22px;"></span>
+            </a>
+          </ng-template>
+        </kendo-grid-column>
+        <div *kendoGridDetailTemplate="let dataItem">
+          <app-details-receiving [objDetail]="dataItem"></app-details-receiving>
+        </div>
+        <kendo-grid-excel fileName="Inquire Reciving.xlsx" [fetchData]="allData"></kendo-grid-excel>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+
+<div id="modal-download" class="modal modal-template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  data-backdrop="static" href="#">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content tx-size-lg">
+      <div class="modal-body tx-center pd-y-20 pd-x-20">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+            <h4 class="ml-5" style="float: left; font-weight: 400;">{{titleDownload}}</h4>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m5">
+              <div class="line"></div>
+            </div>
+
+            <kendo-grid 
+              [data]="viewDet" 
+              [pageSize]="pageSizeDet" 
+              [skip]="skipDet" 
+              [pageable]="pageableDet"
+              (pageChange)="pageChangeDet($event)" 
+              [sortable]="true"
+              (dataStateChange)="dataStateChangeDet($event)">
+        
+                <kendo-grid-column field="FileName" title="File Name" [width]="50"></kendo-grid-column>
+                <kendo-grid-column title="File" [width]="50" [style]="{'text-align': 'center'}">
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <a  (click)="downloadFile(dataItem)" tooltip="¡DOWNLOAD!" placement="right" show-delay="250">
+                      <span class="k-icon k-i-pdf" style="font-size: 22px; color: red"></span>
+                    </a>
+                  </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

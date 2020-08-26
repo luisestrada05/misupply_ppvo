@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'miSupply';
+
+  constructor(
+    private ref: ChangeDetectorRef
+  ) {
+    ref.detach();
+    setInterval(() => { this.ref.detectChanges(); }, 100);
+  }
+
 }

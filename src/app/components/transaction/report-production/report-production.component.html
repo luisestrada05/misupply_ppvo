@@ -1,0 +1,68 @@
+<div class="col-md-12">
+  <app-header></app-header>
+</div>
+
+<div class="col-md-12">
+  <div class="col-md-11 offset-md-1 d-flex mb-2">
+    <!-- catalogo -->
+    <select class="form-control" [(ngModel)]="noPart" name="noPart" (change)="onChangeidReport()">
+      <option value=null disabled selected>Selecciona</option>
+      <option *ngFor="let item of listReporteProduccion" [value]="item.PartId">{{item.PartId}} - {{item.DescPart}}
+      </option>
+    </select>
+    <!-- catalogo -->
+    <input class="form-control ml-2" type="text" placeholder="Qty - {{objDetail.UM}}" [(ngModel)]="qty"
+      (keypress)="validateEvent($event)" (blur)="validateBtn()">
+    <!-- catalogo -->
+    <input class="form-control ml-2" type="text" placeholder="Lot" [(ngModel)]="lote" [disabled]=inputBln>
+    <!-- fecha -->
+    <span class="input-group-text ml-2" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px;"><i
+        class="fa fa-calendar" aria-hidden="true"></i></span>
+    <input type="text" class="form-control text-center" matInput ngxDaterangepickerMd placeholder="To date"
+      [locale]="{applyLabel: 'ok', format: 'DD/MMMM/YYYY'}" autoApply=true singleDatePicker=true [(ngModel)]="toDate"
+      name="toDate" [minDate]="minDatetoDate" [maxDate]="maxDatetoDate" autocomplete="off"
+      style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;border-left: 0px;" disabled />
+    <!-- button -->
+    <button class="btn btn-primary ml-2" (click)="onSearch()" [disabled]=btnBln><i class="fa fa-search"
+        aria-hidden="true"></i> -
+      Search</button>
+  </div>
+</div>
+
+<div class="col-sm-12 m5">
+  <div class="line"></div>
+</div>
+
+<div class="row mg-b-20 mb-4 animated fadeIn" style="clear: both;">
+  <div class="col-sm-12">
+    <div class="card card-dashboard-nine">
+      <div style="display: inline-flex;">
+        <h5>Quantity on hand: </h5>
+        <h5 [ngStyle]="{'color':objDetail.QtyOh >= 0 ? 'green' : 'red' }"> {{objDetail.QtyOh}}</h5>
+      </div>
+      <kendo-grid [data]="view" 
+        [pageSize]="pageSize" 
+        [skip]="skip" 
+        [pageable]="pageable"
+        (pageChange)="pageChange($event)" 
+        [sortable]="true"
+        (dataStateChange)="dataStateChange($event)"  *ngIf="tieneDatos">
+        
+        <ng-template kendoGridToolbarTemplate>
+          <kendo-pager-page-sizes *ngIf="pageable" [pageSizes]="[5, 10, 40]"></kendo-pager-page-sizes>
+        </ng-template>
+      <kendo-grid-column title="Confirm" [width]="50" [style]="{'text-align': 'center'}">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <a target="_blank">
+            <span *ngIf="objDetail.QtyOh >= 0" class="k-icon k-i-checkbox k-i-shape-rect green-span" style="font-size: 22px; cursor: pointer;" (click)="confirm(dataItem)"></span>
+            <span *ngIf="objDetail.QtyOh < 0" class="k-icon k-i-checkbox k-i-shape-rect red-span" style="font-size: 22px; cursor: no-drop;"></span>
+          </a>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="Lot" title="Lot" [width]="100"></kendo-grid-column>
+      <kendo-grid-column field="QtyAvail" title="Qty Avaliable" [width]="100"></kendo-grid-column>
+      <kendo-grid-column field="QtyReq" title="Qty Required" [width]="100"></kendo-grid-column>
+    </kendo-grid>
+    </div>
+  </div>
+</div>

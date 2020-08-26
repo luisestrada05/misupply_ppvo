@@ -1,0 +1,20 @@
+{
+    "/api": {
+        "target": "http://tqalapo01:7778/PortalProveedores/rest/PortalProveedoresService/",
+        "secure": false,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api": ""
+        },
+        "changeOrigin": true
+    },
+    "/server": {
+        "target": "http://oedwapo01:8980/ppvo/rest/ppvoService/",
+        "secure": false,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/server": ""
+        },
+        "changeOrigin": true
+    }
+}

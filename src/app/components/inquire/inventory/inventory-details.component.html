@@ -1,0 +1,12 @@
+<div class="card card-dashboard-nine">
+    <kendo-grid 
+    [data]="gridView">
+  
+      <kendo-grid-column field="PartID" title="Part" [width]="100"></kendo-grid-column>
+      <kendo-grid-column field="PartLot" title="Lot" [width]="200"></kendo-grid-column>
+      <kendo-grid-column field="UM" title="UM" [width]="100"></kendo-grid-column>
+      <kendo-grid-column field="QtyAvail" title="Qty Avaliable" [width]="100"></kendo-grid-column>
+      <kendo-grid-column field="CompLot" title="Component" [width]="200" format="{0:n0}"></kendo-grid-column>
+    </kendo-grid>
+  </div>
+    

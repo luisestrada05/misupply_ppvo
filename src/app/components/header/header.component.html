@@ -1,0 +1,20 @@
+
+
+<div class="col-lg- col-md-12 col-sm-12 col-md-12 mb-3">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-md-12" style="display: flex;">
+    <div style="padding-right: 5px;">
+      <img src="{{constAssets.img.par}}images/user_admin.png" height="80" alt="" style="margin: 3px;">
+    </div>
+    <div style="width: 80%;">
+      <strong>{{user.login_vendor_name}}</strong>
+      <div class="textSmall">{{user.login_userid}}, {{user.login_domain}}</div>
+      <select class="custom-select" [(ngModel)]="userId" name="userId" (change)="onChangeuserId()" *ngIf="vendor">
+        <option value=null disabled selected>Vendors</option>
+        <option *ngFor="let item of listVendors" [value]="item.vendor_name">{{item.vendor_name}}</option>
+      </select>
+    </div>
+  </div> 
+  <div class="col-lg-6 col-md-6 col-sm-12 col-md-12 d-flex justify-content-center d-inline-flex">
+    <strong>{{ruta}}</strong>
+  </div>
+</div>
