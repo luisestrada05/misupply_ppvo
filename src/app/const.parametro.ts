@@ -1,6 +1,7 @@
 export const parametroConst = {
     img: {
-        par: '/webspeed/supply/assets/'
+        // par: '/webspeed/supply/assets/'
+        par: '/assets/'
     },
     api: {
         service: 'http://cloud.metalsa.com/PortalProveedores/rest/PortalProveedoresService'
