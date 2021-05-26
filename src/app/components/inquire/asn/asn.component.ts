@@ -192,7 +192,7 @@ export class AsnComponent implements OnInit {
       this.spinner.hide();
       saveAs(dataUrl, 'Inquire ASN.xlsx');
     });
-  }
+  } 
 
   allData(): ExcelExportData {
     const result: ExcelExportData = {
